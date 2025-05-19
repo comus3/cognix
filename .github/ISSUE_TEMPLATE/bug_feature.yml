@@ -1,9 +1,9 @@
+---
 name: Bug Report / Feature Request
 about: Report a bug or request a new feature
 title: '[BUG]' or '[FEATURE]' - short description
 labels: bug, feature request
 assignees: ''
-
 ---
 
 ### Describe the bug / feature request
