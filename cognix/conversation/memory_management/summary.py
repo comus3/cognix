@@ -1,9 +1,15 @@
+from cognix.utils.const.config import SUMMARY_CONFIG
+
+
 from cognix.conversation.memory_management.memory_strategy import MemoryStrategy
 import threading
 
 class SummaryMemory(MemoryStrategy):
-    def __init__(self, summarizer, max_recent=4):
-        self.summarizer = summarizer
+    def __init__(self, summarizer= None,  max_recent: int = 5):
+        if summarizer is None:
+            self.summarizer = self._summarizer
+        else:
+            self.summarizer = summarizer
         self.summary = ""
         self.recent_history = []
         self.max_recent = max_recent
@@ -40,7 +46,7 @@ class SummaryMemory(MemoryStrategy):
             new_lines = self._format_new_lines()
             prompt = f"""
             Can you please summarize the following conversation and provide a brief overview of the main points discussed?
-            I want only the summary of the conversation, not the conversation itself.
+            I want only the summary of the conversation, not the conversation itself. Do not include the [USER] and [CHATBOT] tags.
             {self.summary.strip()}
             {new_lines}"""
             new_summary = self.summarizer(prompt).strip()
@@ -48,6 +54,13 @@ class SummaryMemory(MemoryStrategy):
 
         thread = threading.Thread(target=summarization_task, daemon=True)
         thread.start()
+    
+    def _summarizer(self, prompt: str) -> str:
+        # TODO FIX THIS SHIT
+        # temporary placeholder for the summarizer agent that will be used
+        from cognix.backend.ollama_backend import OllamaBackend
+        backend = OllamaBackend(model="llama2")
+        return backend.generate(prompt=prompt)
 
     def get_prompt(self) -> str:
         parts = []
@@ -66,5 +79,10 @@ class SummaryMemory(MemoryStrategy):
         return {"summary": self.summary}
 
     
-def summary_memory_factory(config):
+def summary_memory_factory(config=SUMMARY_CONFIG) -> SummaryMemory:
+    """
+    Factory function to create a SummaryMemory instance.
+    """
+    if config is None:
+        config = SUMMARY_CONFIG
     return SummaryMemory(**config)
