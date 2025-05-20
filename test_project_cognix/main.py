@@ -1,5 +1,5 @@
 from cognix.session import COGNIXSession
-
+from colorama import Fore, Style
 def main():
     session = COGNIXSession()
 
@@ -11,10 +11,11 @@ def main():
         "raw": True,
     }
 
-    print()
-
+    # input in green method
+    def input_in_green(prompt):
+        return input(f"{Fore.GREEN}{prompt}{Style.RESET_ALL}")
     while True:
-        user_input = input("#######################\n human input on test app : ")
+        user_input = input_in_green("\nhuman input on test app : ")
         if user_input.strip().lower() == "exit":
             print("Exiting...")
             break
@@ -23,7 +24,6 @@ def main():
             # Pass extra params to chat_stream
             for chunk in session.chat_stream(user_input, **extra_params):
                 print(chunk, end="", flush=True)
-            print("\n#######################\n")  # New line after stream
         else:
             # Pass extra params to chat
             response = session.chat(user_input, **extra_params)
