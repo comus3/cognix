@@ -1,6 +1,6 @@
 
 
-BASE_CONVESATION_PROMPT = (
+BASE_CONVERSATION_PROMPT = (
     "The following is a friendly, detailed, and informative conversation between a human and an AI assistant. "
     "The AI only speaks for itself and never includes the human's part or pretends to be both sides. "
     "Each AI reply is a continuation of the conversation without any prefixes like 'AI:' or 'Human:'. "
