@@ -1,14 +1,12 @@
 from cognix.backend.ollama_backend import OllamaBackend
 
-from cognix.conversation.memory_management.buffer import BufferMemory
-from cognix.conversation.memory_management.summary import SummaryMemory
 from cognix.conversation.manager import ConversationManager
 
-from cognix.utils.const.PROMPTS.conversation import BASE_CONVESATION_PROMPT
+from cognix.utils.const.PROMPTS.conversation import BASE_CONVERSATION_PROMPT
 from cognix.utils.const.registry import MemoryRegistry
 
 class COGNIXSession:
-    def __init__(self, model="llama2", system_prompt=BASE_CONVESATION_PROMPT, memory_type="summary",memory_config=None):
+    def __init__(self, model="llama2", system_prompt=BASE_CONVERSATION_PROMPT, memory_type="summary",memory_config=None):
         self.backend = OllamaBackend(model=model)
 
         # Use the registry to get the memory instance dynamically
